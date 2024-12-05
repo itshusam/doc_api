@@ -1,0 +1,431 @@
+swagger : 2.0.0
+info:
+  title: Factory Management System API
+  version: 1.0.0
+  description: API for managing factory operations, including employees, production, inventory, orders, and customers.
+
+paths:
+  /employee:
+    post:
+      summary: Create a new employee
+      tags:
+        - Employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "John Doe"
+                position:
+                  type: string
+                  example: "Engineer"
+                department:
+                  type: string
+                  example: "Production"
+              required:
+                - name
+                - position
+                - department
+      responses:
+        '201':
+          description: Employee created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  position:
+                    type: string
+                  department:
+                    type: string
+              example:
+                id: 1
+                name: "John Doe"
+                position: "Engineer"
+                department: "Production"
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Invalid input data provided."
+    get:
+      summary: List all employees
+      tags:
+        - Employee
+      responses:
+        '200':
+          description: A list of employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    position:
+                      type: string
+                    department:
+                      type: string
+              example:
+                - id: 1
+                  name: "John Doe"
+                  position: "Engineer"
+                  department: "Production"
+                - id: 2
+                  name: "Jane Smith"
+                  position: "Manager"
+                  department: "Sales"
+
+  /customer:
+    post:
+      summary: Create a new customer
+      tags:
+        - Customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Alice"
+                email:
+                  type: string
+                  example: "alice@example.com"
+                phone:
+                  type: string
+                  example: "123-456-7890"
+              required:
+                - name
+                - email
+                - phone
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  phone:
+                    type: string
+              example:
+                id: 1
+                name: "Alice"
+                email: "alice@example.com"
+                phone: "123-456-7890"
+        '400':
+          description: Validation Error - Missing or Invalid Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Validation error: missing required fields"
+        '500':
+          description: Server Error - Unable to create customer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Server error. Please try again later."
+    get:
+      summary: List all customers
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: A list of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    phone:
+                      type: string
+              example:
+                - id: 1
+                  name: "Alice"
+                  email: "alice@example.com"
+                  phone: "123-456-7890"
+                - id: 2
+                  name: "Bob"
+                  email: "bob@example.com"
+                  phone: "987-654-3210"
+        '500':
+          description: Server Error - Unable to retrieve customers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Server error. Please try again later."
+
+  /product:
+    post:
+      summary: Create a new product
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Widget"
+                description:
+                  type: string
+                  example: "A useful widget"
+                price:
+                  type: number
+                  format: float
+                  example: 19.99
+              required:
+                - name
+                - price
+      responses:
+        '201':
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: number
+                    format: float
+              example:
+                id: 1
+                name: "Widget"
+                description: "A useful widget"
+                price: 19.99
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Invalid input data provided."
+    get:
+      summary: List all products
+      tags:
+        - Product
+      responses:
+        '200':
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                      format: float
+              example:
+                - id: 1
+                  name: "Widget"
+                  description: "A useful widget"
+                  price: 19.99
+                - id: 2
+                  name: "Gadget"
+                  description: "An advanced gadget"
+                  price: 29.99
+
+  /order:
+    post:
+      summary: Create a new order
+      tags:
+        - Order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                  example: 1
+                quantity:
+                  type: integer
+                  example: 10
+              required:
+                - product_id
+                - quantity
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: integer
+                  product_id:
+                    type: integer
+                  quantity:
+                    type: integer
+              example:
+                order_id: 1001
+                product_id: 1
+                quantity: 10
+        '400':
+          description: Invalid input data
+
+  /production:
+    post:
+      summary: Create a new production record
+      tags:
+        - Production
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product_id:
+                  type: integer
+                  example: 1
+                quantity_produced:
+                  type: integer
+                  example: 500
+                production_date:
+                  type: string
+                  format: date
+                  example: "2024-10-25"
+              required:
+                - product_id
+                - quantity_produced
+                - production_date
+      responses:
+        '201':
+          description: Production record created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  product_id:
+                    type: integer
+                  quantity_produced:
+                    type: integer
+                  production_date:
+                    type: string
+                    format: date
+              example:
+                id: 1
+                product_id: 1
+                quantity_produced: 500
+                production_date: "2024-10-25"
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Invalid input data provided."
+    get:
+      summary: List all production records
+      tags:
+        - Production
+      responses:
+        '200':
+          description: A list of production records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    product_id:
+                      type: integer
+                    quantity_produced:
+                      type: integer
+                    production_date:
+                      type: string
+                      format: date
+              example:
+                - id: 1
+                  product_id: 1
+                  quantity_produced: 500
+                  production_date: "2024-10-25"
+                - id: 2
+                  product_id: 2
+                  quantity_produced: 300
+                  production_date: "2024-10-24"
